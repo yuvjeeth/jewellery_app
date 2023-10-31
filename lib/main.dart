@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jewellery_app/views/product_catalog.dart';
+//import 'package:jewellery_app/views/product_catalog.dart';
 import 'package:jewellery_app/views/welcome_screen.dart';
 
 void main() {

@@ -15,7 +15,7 @@ class ProductEntry extends StatefulWidget {
   final double width;
   
 
-  const ProductEntry({
+  const ProductEntry({super.key, 
     required this.id,
     required this.title,
     required this.description,
@@ -69,19 +69,19 @@ void goToProductPage(){}
                       ),
                       if(isMouseHover) Container(
                         height: widget.height*0.6,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.black54,
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(20.0)),
+                              BorderRadius.all(Radius.circular(20.0)),
                         ),
-                        child: Column(children: [Icon(Icons.search_rounded),Text("View More")],),
+                        child: const Column(children: [Icon(Icons.search_rounded),Text("View More")],),
                       ),
                       
                     ],
                   ),
                 ),
               ),
-              Padding(padding: EdgeInsets.symmetric(vertical: 6)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
               Text(
               widget.title,
               textAlign: TextAlign.center,
@@ -90,7 +90,7 @@ void goToProductPage(){}
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Padding(padding: EdgeInsets.symmetric(vertical: 6)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal:10.0),
                 child: Text(
@@ -98,30 +98,30 @@ void goToProductPage(){}
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                   textAlign: TextAlign.justify,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w300,
                     ),
                 ),
               ),
-               Padding(padding: EdgeInsets.symmetric(vertical: 6)),
+               const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal:10.0),
                 child: Stack(
                   
                   children: [
                     Align(
-                      alignment: Alignment(-0.5,0),
+                      alignment: const Alignment(-0.5,0),
                       child: Text(
-                      "₹"+ widget.price.toString(),
-                         style: GoogleFonts.aboreto(textStyle: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+                      "₹${widget.price}",
+                         style: GoogleFonts.aboreto(textStyle: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
                       ),
                     ),
                     Align(
-                      alignment: Alignment(0.95, 0),
+                      alignment: const Alignment(0.95, 0),
                       child: SizedBox(
                         width: 150,
-                        child: ElevatedButton(onPressed: test, child: Row(
+                        child: ElevatedButton(onPressed: test, child: const Row(
                           children: [
                             Text("Add to cart"),
                              Padding(padding: EdgeInsets.symmetric(horizontal: 4)),

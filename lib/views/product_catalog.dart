@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jewellery_app/views/admin_login.dart';
 import 'package:jewellery_app/widgets/product_entry.dart';
 
 class ProductCatalog extends StatefulWidget {
@@ -11,7 +12,7 @@ class ProductCatalog extends StatefulWidget {
 
 class _ProductCatalog extends State<ProductCatalog> {
   List<Widget?> listOfProducts = [
-    ProductEntry(
+    const ProductEntry(
         height: 500,
         width: 500,
         id: 1,
@@ -21,7 +22,7 @@ class _ProductCatalog extends State<ProductCatalog> {
         price: 4500,
         imageURL:
             "https://www.griiham.in/cdn/shop/products/Gold-Finish-Traditional-Golden-balls-Short-Necklace-Set-1063N-Necklace-Set-Griiham.jpg"),
-    ProductEntry(
+    const ProductEntry(
         height: 500,
         width: 500,
         id: 1,
@@ -30,7 +31,7 @@ class _ProductCatalog extends State<ProductCatalog> {
             "This timeless Gold Finish Traditional Golden Balls Short Necklace Set is a classic addition to any collection. It is crafted with quality materials for a long-lasting, radiant shine and rich golden color. The intricate design is sure to impress, making this a perfect jewelry gift for any occasion.",
         price: 4500,
         imageURL:
-            "https://www.griiham.in/cdn/shop/products/Gold-Finish-Traditional-Golden-balls-Short-Necklace-Set-1063N-Necklace-Set-Griiham.jpg")
+            "https://www.griiham.in/cdn/shop/products/Gold-Finish-Traditional-Golden-balls-Short-Necklace-Set-1063N-Necklace-Set-Griiham.jpg"),
   ];
 
   @override
@@ -39,29 +40,45 @@ class _ProductCatalog extends State<ProductCatalog> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         centerTitle: true,
-        title: Text(
-          "The Jewellery Store",
-          textAlign: TextAlign.center,
-          style: GoogleFonts.aboreto(
-            textStyle: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w300,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const Spacer(),
+            Text(
+              "The Jewellery Store",
+              textAlign: TextAlign.center,
+              style: GoogleFonts.aboreto(
+                textStyle: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
             ),
-          ),
+            const Spacer(),
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AdminLogin(),
+                    ),
+                  );
+                },
+                child: const Icon(Icons.person)),
+          ],
         ),
       ),
       body: Column(
         children: [
           Expanded(
-            
             child: GridView.builder(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               itemCount: listOfProducts.length,
               itemBuilder: (BuildContext context, index) {
                 return listOfProducts[index];
               },
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-               crossAxisCount: 3,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
                 childAspectRatio: 0.5625,
                 crossAxisSpacing: 0.0,
                 mainAxisSpacing: 5,

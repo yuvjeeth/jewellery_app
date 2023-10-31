@@ -34,7 +34,7 @@ class _WelcomeScreen extends State<WelcomeScreen> {
         child: FloatingActionButton.extended(
           isExtended: true,
           onPressed: goToHomeScreen,
-          label: Row(
+          label: const Row(
             children: [
               Text(
                 "View Catalog",
@@ -59,20 +59,20 @@ class _WelcomeScreen extends State<WelcomeScreen> {
             decoration: BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage("assets/images/welcome_bg.jpg"),
+                  image: const AssetImage("assets/images/welcome_bg.jpg"),
                   colorFilter: ColorFilter.mode(
                       Colors.black.withOpacity(0.7), BlendMode.darken)),
             ),
           ),
           Align(
-            alignment: Alignment(-0.8, 0),
+            alignment: const Alignment(-0.8, 0),
             child: SizedBox(
               width: MediaQuery.of(context).size.width / 2,
               child: Text(
                 "The Jewellery Store",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.aboreto(
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                     color: Colors.white,
                     fontSize: 60,
                     fontWeight: FontWeight.w300,
@@ -82,19 +82,19 @@ class _WelcomeScreen extends State<WelcomeScreen> {
             ),
           ),
           Align(
-            alignment: Alignment(0.2, -0.2),
+            alignment: const Alignment(0.2, -0.2),
             child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.7,
-              child: VerticalDivider(
+              child: const VerticalDivider(
                 color: Colors.white54,
               ),
             ),
           ),
           Align(
-            alignment: Alignment(1, 0),
+            alignment: const Alignment(1, 0),
             child: SizedBox(
               width: MediaQuery.of(context).size.width / 2.4,
-              child: Text(
+              child: const Text(
                 "The Place Where Art Meets Craftsmanship",
                 textAlign: TextAlign.center,
                 style: TextStyle(
