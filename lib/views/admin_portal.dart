@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AdminPortal extends StatefulWidget {
@@ -160,7 +162,32 @@ class _AdminPortalState extends State<AdminPortal> {
                 height: 15,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  final FirebaseFirestore firestore =
+                      FirebaseFirestore.instance;
+
+                  CollectionReference itemsCollection =
+                      firestore.collection('Jewellery Items');
+
+                  Map<String, dynamic> data = {
+                    'Item Name': name.text,
+                    'Item Description': description.text,
+                    'Item Price': double.parse(price.text),
+                    'Item imageLink': imageLink.text,
+                  };
+
+                  itemsCollection
+                      .add(data)
+                      .then((DocumentReference documentReference) {
+                    if (kDebugMode) {
+                      print('Document added with ID: ${documentReference.id}');
+                    }
+                  }).catchError((error) {
+                    if (kDebugMode) {
+                      print('Error adding document: $error');
+                    }
+                  });
+                },
                 child: const Text('Submit'),
               ),
             ],

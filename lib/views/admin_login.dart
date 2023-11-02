@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/views/admin_portal.dart';
 
@@ -142,7 +143,9 @@ class _AdminLoginState extends State<AdminLogin> {
                         // );
                         uName.clear();
                         uPassword.clear();
-                        print('Great Success');
+                        if (kDebugMode) {
+                          print('Great Success');
+                        }
                       } else {
                         AlertDialog alert = AlertDialog(
                           title: const Row(
