@@ -8,8 +8,165 @@ class AdminPortal extends StatefulWidget {
 }
 
 class _AdminPortalState extends State<AdminPortal> {
+  TextEditingController name = TextEditingController();
+  TextEditingController price = TextEditingController();
+  TextEditingController description = TextEditingController();
+  TextEditingController imageLink = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Welcome Admin'),
+      ),
+      body: Center(
+        child: SizedBox(
+          width: 300,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                'Add new items',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: 200,
+                height: 1,
+                color: Colors.grey,
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              TextField(
+                controller: name,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                  ),
+                  floatingLabelStyle: TextStyle(color: Colors.deepPurple),
+                  labelText: 'Item Name',
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              TextField(
+                controller: description,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                  ),
+                  floatingLabelStyle: TextStyle(color: Colors.deepPurple),
+                  labelText: 'Description',
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              TextField(
+                controller: price,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                  ),
+                  floatingLabelStyle: TextStyle(color: Colors.deepPurple),
+                  labelText: 'Price',
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              TextField(
+                controller: imageLink,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                  ),
+                  floatingLabelStyle: TextStyle(color: Colors.deepPurple),
+                  labelText: 'Image link',
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              ElevatedButton(
+                onPressed: () {},
+                child: const Text('Submit'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
