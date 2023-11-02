@@ -29,7 +29,8 @@
 
 # index.html after firebase connection
 ../web/index.html
-../lib/views/sample.dart
+*.html
+
 
 # Android related
 **/android/**/gradle-wrapper.jar
