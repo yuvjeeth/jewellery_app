@@ -28,7 +28,7 @@
 /build/
 
 # index.html after firebase connection
-web/index.html
+../web/index.html
 
 # Android related
 **/android/**/gradle-wrapper.jar
