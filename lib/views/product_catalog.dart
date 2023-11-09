@@ -3,6 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:jewellery_app/views/admin_login.dart';
 import 'package:jewellery_app/widgets/product_entry.dart';
 
+import 'contact_us.dart';
+import 'our_story.dart';
+import 'wishlist.dart';
+
 class ProductCatalog extends StatefulWidget {
   const ProductCatalog({super.key});
 
@@ -43,7 +47,6 @@ class _ProductCatalog extends State<ProductCatalog> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Spacer(),
             Text(
               "The Jewellery Store",
               textAlign: TextAlign.center,
@@ -55,16 +58,67 @@ class _ProductCatalog extends State<ProductCatalog> {
               ),
             ),
             const Spacer(),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const OurStory(),
+                  ),
+                );
+              },
+              child: const Text('Our story'),
+            ),
+            const SizedBox(
+              width: 30,
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ContactUs(),
+                  ),
+                );
+              },
+              child: const Text('Contact Us'),
+            ),
+            const SizedBox(
+              width: 30,
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Wishlist(),
+                  ),
+                );
+              },
+              child: const Text('Wishlist'),
+            ),
+            const SizedBox(
+              width: 70,
+            ),
             GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AdminLogin(),
-                    ),
-                  );
-                },
-                child: const Icon(Icons.person)),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AdminLogin(),
+                  ),
+                );
+              },
+              child: const Column(
+                children: [
+                  Icon(Icons.person),
+                  Text(
+                    'Admin Login',
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

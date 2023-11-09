@@ -23,15 +23,7 @@ class _AdminLoginState extends State<AdminLogin> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () {},
-                child: const Text('Logout'),
-              ),
-            ],
-          ),
+        
         ),
         body: Center(
           child: Material(
