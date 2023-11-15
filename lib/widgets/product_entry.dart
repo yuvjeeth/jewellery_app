@@ -51,34 +51,27 @@ class _ProductEntry extends State<ProductEntry> {
                 onExit: (function) => setState(() => isMouseHover = false),
                 child: GestureDetector(
                   onTap: goToProductPage,
-                  child: Stack(
-                    children: [
-                      Container(
-                        height: widget.height * 0.6,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(widget.imageURL),
+                  child: // Replace the existing Container code
+                      Image.network(
+                    widget.imageURL,
+                    height: widget.height * 0.6,
+                    width: double.infinity, // Occupy full width
+                    fit: BoxFit.cover, // Adjust to cover the entire container
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    (loadingProgress.expectedTotalBytes ?? 1)
+                                : null,
                           ),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20.0)),
-                        ),
-                      ),
-                      if (isMouseHover)
-                        Container(
-                          height: widget.height * 0.6,
-                          decoration: const BoxDecoration(
-                            color: Colors.black54,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                          ),
-                          child: const Column(
-                            children: [
-                              Icon(Icons.search_rounded),
-                              Text("View More"),
-                            ],
-                          ),
-                        ),
-                    ],
+                        );
+                      }
+                    },
                   ),
                 ),
               ),

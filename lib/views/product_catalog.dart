@@ -17,28 +17,27 @@ class ProductCatalog extends StatefulWidget {
 }
 
 class _ProductCatalog extends State<ProductCatalog> {
-  // List<Widget?> listOfProducts = [
-  //   const ProductEntry(
-  //       height: 500,
-  //       width: 500,
-  //       id: 1,
-  //       title: "Gold Finish Traditional Golden Balls Short Necklace",
-  //       description:
-  //           "This timeless Gold Finish Traditional Golden Balls Short Necklace Set is a classic addition to any collection. It is crafted with quality materials for a long-lasting, radiant shine and rich golden color. The intricate design is sure to impress, making this a perfect jewelry gift for any occasion.",
-  //       price: 4500,
-  //       imageURL:
-  //           "https://www.griiham.in/cdn/shop/products/Gold-Finish-Traditional-Golden-balls-Short-Necklace-Set-1063N-Necklace-Set-Griiham.jpg"),
-  //   const ProductEntry(
-  //       height: 500,
-  //       width: 500,
-  //       id: 1,
-  //       title: "Gold Finish Traditional Golden Balls Short Necklace",
-  //       description:
-  //           "This timeless Gold Finish Traditional Golden Balls Short Necklace Set is a classic addition to any collection. It is crafted with quality materials for a long-lasting, radiant shine and rich golden color. The intricate design is sure to impress, making this a perfect jewelry gift for any occasion.",
-  //       price: 4500,
-  //       imageURL:
-  //           "https://www.griiham.in/cdn/shop/products/Gold-Finish-Traditional-Golden-balls-Short-Necklace-Set-1063N-Necklace-Set-Griiham.jpg"),
-  // ];
+  List<Widget?> listOfProducts = [
+    const ProductEntry(
+        // height: 500,
+        // width: 500,
+        title: "Gold Finish Traditional Golden Balls Short Necklace",
+        description:
+            "This timeless Gold Finish Traditional Golden Balls Short Necklace Set is a classic addition to any collection. It is crafted with quality materials for a long-lasting, radiant shine and rich golden color. The intricate design is sure to impress, making this a perfect jewelry gift for any occasion.",
+        price: 4500,
+        imageURL:
+            "https://www.griiham.in/cdn/shop/products/Gold-Finish-Traditional-Golden-balls-Short-Necklace-Set-1063N-Necklace-Set-Griiham.jpg"),
+    // const ProductEntry(
+    //     height: 500,
+    //     width: 500,
+    //     id: 1,
+    //     title: "Gold Finish Traditional Golden Balls Short Necklace",
+    //     description:
+    //         "This timeless Gold Finish Traditional Golden Balls Short Necklace Set is a classic addition to any collection. It is crafted with quality materials for a long-lasting, radiant shine and rich golden color. The intricate design is sure to impress, making this a perfect jewelry gift for any occasion.",
+    //     price: 4500,
+    //     imageURL:
+    //         "https://www.griiham.in/cdn/shop/products/Gold-Finish-Traditional-Golden-balls-Short-Necklace-Set-1063N-Necklace-Set-Griiham.jpg"),
+  ];
   Future<List<Item>> getItems() async {
     // Fetch data from Firestore
     QuerySnapshot querySnapshot =
@@ -164,12 +163,12 @@ class _ProductCatalog extends State<ProductCatalog> {
                   List<Widget?> listOfProducts = snapshot.data!.docs.map((doc) {
                     return ProductEntry(
                       // Use appropriate field names based on your Firestore structure
+                      height: 570,
+                      width: double.infinity,
                       title: doc['Item Name'],
                       description: doc['Item Description'],
                       price: double.parse(doc['Item Price']),
-                      // imageURL: doc['Item imageLink'],
-                      imageURL:
-                          'https://www.griiham.in/cdn/shop/products/Gold-Finish-Traditional-Golden-balls-Short-Necklace-Set-1063N-Necklace-Set-Griiham.jpg',
+                      imageURL: doc['Item imageLink'],
                     );
                   }).toList();
 
