@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jewellery_app/views/product_catalog.dart';
+
+import '../models/item.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -21,7 +24,9 @@ class _WelcomeScreen extends State<WelcomeScreen> {
   void goToHomeScreen() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const ProductCatalog()),
+      MaterialPageRoute(
+        builder: (context) => const ProductCatalog(),
+      ),
     );
   }
 
@@ -37,16 +42,19 @@ class _WelcomeScreen extends State<WelcomeScreen> {
           label: const Row(
             children: [
               Text(
-                "View Catalog",
+                "Login/Signup",
                 style: TextStyle(
                   fontSize: 24,
                   fontFamily: 'Lato',
                 ),
               ),
-               Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 0),
               ),
-              Icon(Icons.arrow_right_alt_rounded, size: 96,),
+              Icon(
+                Icons.arrow_right_alt_rounded,
+                size: 96,
+              ),
             ],
           ),
         ),

@@ -1,9 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jewellery_app/views/product_catalog.dart';
 
-import 'admin_login.dart';
 import 'contact_us.dart';
 import 'our_story.dart';
 
@@ -92,25 +90,7 @@ class _WishlistState extends State<Wishlist> {
             const SizedBox(
               width: 70,
             ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AdminLogin(),
-                  ),
-                );
-              },
-              child: const Column(
-                children: [
-                  Icon(Icons.person),
-                  Text(
-                    'Admin Login',
-                    style: TextStyle(fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
+          
           ],
         ),
       ),

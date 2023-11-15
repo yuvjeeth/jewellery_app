@@ -22,9 +22,7 @@ class _AdminLoginState extends State<AdminLogin> {
         password.unfocus();
       },
       child: Scaffold(
-        appBar: AppBar(
-        
-        ),
+        appBar: AppBar(),
         body: Center(
           child: Material(
             elevation: 10,
@@ -180,3 +178,6 @@ class _AdminLoginState extends State<AdminLogin> {
     );
   }
 }
+
+// add daily gold rate
+//search and sort

@@ -1,22 +1,21 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 
 class ProductEntry extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _ProductEntry();
 
-  final double id;
   final String title;
   final String description;
   final double price;
   final String imageURL;
   final double height;
   final double width;
-  
 
-  const ProductEntry({super.key, 
-    required this.id,
+  const ProductEntry({
+    super.key,
     required this.title,
     required this.description,
     required this.price,
@@ -27,16 +26,14 @@ class ProductEntry extends StatefulWidget {
 }
 
 class _ProductEntry extends State<ProductEntry> {
+  bool isMouseHover = false;
 
-bool isMouseHover = false;
+  void test() {}
 
-void test(){}
-
-void goToProductPage(){}
+  void goToProductPage() {}
 
   @override
   Widget build(BuildContext context) {
-    
     return SizedBox(
       height: widget.height,
       width: widget.width,
@@ -50,41 +47,45 @@ void goToProductPage(){}
           child: Column(
             children: [
               MouseRegion(
-                onEnter:(function) => setState(() => isMouseHover = true) ,
+                onEnter: (function) => setState(() => isMouseHover = true),
                 onExit: (function) => setState(() => isMouseHover = false),
                 child: GestureDetector(
                   onTap: goToProductPage,
                   child: Stack(
                     children: [
                       Container(
-                        height: widget.height*0.6,
+                        height: widget.height * 0.6,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                 widget.imageURL),),
+                            image: NetworkImage(widget.imageURL),
+                          ),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(20.0)),
                         ),
                       ),
-                      if(isMouseHover) Container(
-                        height: widget.height*0.6,
-                        decoration: const BoxDecoration(
-                          color: Colors.black54,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(20.0)),
+                      if (isMouseHover)
+                        Container(
+                          height: widget.height * 0.6,
+                          decoration: const BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          child: const Column(
+                            children: [
+                              Icon(Icons.search_rounded),
+                              Text("View More"),
+                            ],
+                          ),
                         ),
-                        child: const Column(children: [Icon(Icons.search_rounded),Text("View More")],),
-                      ),
-                      
                     ],
                   ),
                 ),
               ),
               const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
               Text(
-              widget.title,
-              textAlign: TextAlign.center,
+                widget.title,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -92,42 +93,47 @@ void goToProductPage(){}
               ),
               const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal:10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Text(
-                widget.description,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
+                  widget.description,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
                   textAlign: TextAlign.justify,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w300,
-                    ),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w300,
+                  ),
                 ),
               ),
-               const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal:10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Stack(
-                  
                   children: [
                     Align(
-                      alignment: const Alignment(-0.5,0),
+                      alignment: const Alignment(-0.5, 0),
                       child: Text(
-                      "₹${widget.price}",
-                         style: GoogleFonts.aboreto(textStyle: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+                        "₹${widget.price}",
+                        style: GoogleFonts.aboreto(
+                            textStyle: const TextStyle(
+                                fontSize: 26, fontWeight: FontWeight.bold)),
                       ),
                     ),
                     Align(
                       alignment: const Alignment(0.95, 0),
                       child: SizedBox(
                         width: 150,
-                        child: ElevatedButton(onPressed: test, child: const Row(
-                          children: [
-                            Text("Add to cart"),
-                             Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
-                            Icon(Icons.add_shopping_cart_rounded),
-                          ],
-                        )),
+                        child: ElevatedButton(
+                            onPressed: test,
+                            child: const Row(
+                              children: [
+                                Text("Add to cart"),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 4)),
+                                Icon(Icons.add_shopping_cart_rounded),
+                              ],
+                            )),
                       ),
                     ),
                   ],

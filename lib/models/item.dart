@@ -1,14 +1,12 @@
-class Item{
-  final int? id;
+class Item {
   final String? name;
   final String? description;
-  final num price;
-  final String? image;
+  final double price;
+  final String? imageLink;
 
   Item(
-      {required this.id,
-      required this.name,
+      {required this.name,
       this.description,
       required this.price,
-      this.image});
+      required this.imageLink});
 }

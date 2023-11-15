@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:jewellery_app/views/product_catalog.dart';
 
 class AdminPortal extends StatefulWidget {
   const AdminPortal({super.key});
@@ -19,7 +20,23 @@ class _AdminPortalState extends State<AdminPortal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Welcome Admin'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProductCatalog(),
+                  ),
+                  (Route<dynamic> route) => false,
+                );
+              },
+              child: const Text('Logout'),
+            ),
+          ],
+        ),
       ),
       body: Center(
         child: SizedBox(
@@ -172,7 +189,8 @@ class _AdminPortalState extends State<AdminPortal> {
                   Map<String, dynamic> data = {
                     'Item Name': name.text,
                     'Item Description': description.text,
-                    'Item Price': double.parse(price.text),
+                    'Item Price': price.text,
+                    // 'Item Price': double.parse(price.text),
                     'Item imageLink': imageLink.text,
                   };
 

@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jewellery_app/views/admin_login.dart';
 import 'package:jewellery_app/views/contact_us.dart';
 import 'package:jewellery_app/views/wishlist.dart';
 
@@ -151,6 +149,9 @@ class _OurStoryState extends State<OurStory> {
                   style: TextStyle(fontSize: 18),
                   textAlign: TextAlign.center,
                 ),
+              ),
+              const SizedBox(
+                height: 50,
               ),
             ],
           ),
