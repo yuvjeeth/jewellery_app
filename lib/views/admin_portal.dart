@@ -179,32 +179,71 @@ class _AdminPortalState extends State<AdminPortal> {
                 height: 15,
               ),
               ElevatedButton(
-                onPressed: () {
-                  final FirebaseFirestore firestore =
-                      FirebaseFirestore.instance;
+                onPressed: () async {
+                  try {
+                    final FirebaseFirestore firestore =
+                        FirebaseFirestore.instance;
+                    CollectionReference itemsCollection =
+                        firestore.collection('Jewellery Items');
 
-                  CollectionReference itemsCollection =
-                      firestore.collection('Jewellery Items');
+                    Map<String, dynamic> data = {
+                      'Item Name': name.text,
+                      'Item Description': description.text,
+                      'Item Price': price.text,
+                      'Item imageLink': imageLink.text,
+                    };
 
-                  Map<String, dynamic> data = {
-                    'Item Name': name.text,
-                    'Item Description': description.text,
-                    'Item Price': price.text,
-                    // 'Item Price': double.parse(price.text),
-                    'Item imageLink': imageLink.text,
-                  };
+                    await itemsCollection.add(data);
 
-                  itemsCollection
-                      .add(data)
-                      .then((DocumentReference documentReference) {
                     if (kDebugMode) {
-                      print('Document added with ID: ${documentReference.id}');
+                      print('Document added successfully');
                     }
-                  }).catchError((error) {
+                    if (!mounted) return;
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Success'),
+                          content: const Text('Item added successfully.'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+
+                    name.clear();
+                    description.clear();
+                    price.clear();
+                    imageLink.clear();
+                  } catch (error) {
                     if (kDebugMode) {
                       print('Error adding document: $error');
                     }
-                  });
+
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Error'),
+                          content: Text('An error occurred: $error'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
                 },
                 child: const Text('Submit'),
               ),

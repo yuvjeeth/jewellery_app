@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:jewellery_app/views/admin_login.dart';
 import 'package:jewellery_app/widgets/product_entry.dart';
 
-import '../models/item.dart';
 import 'contact_us.dart';
 import 'our_story.dart';
 import 'wishlist.dart';
@@ -17,49 +16,24 @@ class ProductCatalog extends StatefulWidget {
 }
 
 class _ProductCatalog extends State<ProductCatalog> {
-  List<Widget?> listOfProducts = [
-    const ProductEntry(
-        // height: 500,
-        // width: 500,
-        title: "Gold Finish Traditional Golden Balls Short Necklace",
-        description:
-            "This timeless Gold Finish Traditional Golden Balls Short Necklace Set is a classic addition to any collection. It is crafted with quality materials for a long-lasting, radiant shine and rich golden color. The intricate design is sure to impress, making this a perfect jewelry gift for any occasion.",
-        price: 4500,
-        imageURL:
-            "https://www.griiham.in/cdn/shop/products/Gold-Finish-Traditional-Golden-balls-Short-Necklace-Set-1063N-Necklace-Set-Griiham.jpg"),
-    // const ProductEntry(
-    //     height: 500,
-    //     width: 500,
-    //     id: 1,
-    //     title: "Gold Finish Traditional Golden Balls Short Necklace",
-    //     description:
-    //         "This timeless Gold Finish Traditional Golden Balls Short Necklace Set is a classic addition to any collection. It is crafted with quality materials for a long-lasting, radiant shine and rich golden color. The intricate design is sure to impress, making this a perfect jewelry gift for any occasion.",
-    //     price: 4500,
-    //     imageURL:
-    //         "https://www.griiham.in/cdn/shop/products/Gold-Finish-Traditional-Golden-balls-Short-Necklace-Set-1063N-Necklace-Set-Griiham.jpg"),
-  ];
-  Future<List<Item>> getItems() async {
-    // Fetch data from Firestore
-    QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('Jewellery Items').get();
+  TextEditingController search = TextEditingController();
+  List<Widget?> allProducts = [];
+  List<Widget?> listOfProducts = [];
 
-    // Process data and convert it to List<Item>
-    List<Item> items = querySnapshot.docs.map((doc) {
-      // Print data to console for verification
-      print("Item Name: ${doc['Item Name']}");
-      print("Item Description: ${doc['Item Description']}");
-      print("Item Price: ${doc['Item Price']}");
-      print("Item ImageLink: ${doc['Item imageLink']}");
-
-      return Item(
-        name: doc['Item Name'],
-        price: (doc['Item Price'] as num).toDouble(),
-        description: doc['Item Description'],
-        imageLink: doc['Item ImageLink'],
-      );
+  List<Widget?> filterProducts(String query, List<Widget?> allProducts) {
+    return allProducts.where((product) {
+      return product != null &&
+          (product as ProductEntry)
+              .title
+              .toLowerCase()
+              .contains(query.toLowerCase());
     }).toList();
+  }
 
-    return items;
+  void updateUI(String query) {
+    setState(() {
+      listOfProducts = filterProducts(query, allProducts);
+    });
   }
 
   @override
@@ -82,15 +56,35 @@ class _ProductCatalog extends State<ProductCatalog> {
               ),
             ),
             const Spacer(),
+            SizedBox(
+              width: 200,
+              child: TextField(
+                controller: search,
+                onChanged: (value) {
+                  updateUI(value);
+                },
+                decoration: const InputDecoration(
+                  hintText: 'Search items...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  suffixIcon: Icon(Icons.search),
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 60,
+            ),
             InkWell(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const OurStory(),
-                //   ),
-                // );
-                getItems();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const OurStory(),
+                  ),
+                );
               },
               child: const Text('Our story'),
             ),
@@ -160,9 +154,8 @@ class _ProductCatalog extends State<ProductCatalog> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else {
-                  List<Widget?> listOfProducts = snapshot.data!.docs.map((doc) {
+                  allProducts = snapshot.data!.docs.map((doc) {
                     return ProductEntry(
-                      // Use appropriate field names based on your Firestore structure
                       height: 570,
                       width: double.infinity,
                       title: doc['Item Name'],
@@ -171,6 +164,8 @@ class _ProductCatalog extends State<ProductCatalog> {
                       imageURL: doc['Item imageLink'],
                     );
                   }).toList();
+
+                  listOfProducts = filterProducts(search.text, allProducts);
 
                   return GridView.builder(
                     shrinkWrap: true,

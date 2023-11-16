@@ -115,15 +115,15 @@ class _ProductEntry extends State<ProductEntry> {
                     Align(
                       alignment: const Alignment(0.95, 0),
                       child: SizedBox(
-                        width: 150,
+                        width: 175,
                         child: ElevatedButton(
                             onPressed: test,
                             child: const Row(
                               children: [
-                                Text("Add to cart"),
+                                Text("Add to wishlist"),
                                 Padding(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 4)),
+                                        EdgeInsets.symmetric(horizontal: 5)),
                                 Icon(Icons.add_shopping_cart_rounded),
                               ],
                             )),
