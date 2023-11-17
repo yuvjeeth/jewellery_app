@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -27,10 +28,71 @@ class ProductEntry extends StatefulWidget {
 
 class _ProductEntry extends State<ProductEntry> {
   bool isMouseHover = false;
+  bool addedToWishlist = false;
 
-  void test() {}
+  @override
+  void initState() {
+    super.initState();
+    checkWishlistStatus();
+  }
 
-  void goToProductPage() {}
+  // Function to check if the item is already in the Wishlist
+  // Function to check if the item is already in the Wishlist
+  void checkWishlistStatus() async {
+    var wishlistQuery = await FirebaseFirestore.instance
+        .collection('Wishlist Items')
+        .where('itemName', isEqualTo: widget.title)
+        .get();
+
+    setState(() {
+      addedToWishlist = wishlistQuery.docs.isNotEmpty;
+    });
+  }
+
+  // Function to add an item to the Wishlist Items collection
+  void addToWishlist(BuildContext context) async {
+    // Check if the item already exists in the Wishlist Items collection
+    var wishlistQuery = await FirebaseFirestore.instance
+        .collection('Wishlist Items')
+        .where('itemName', isEqualTo: widget.title)
+        .get();
+
+    // If the item doesn't exist, create a new document
+    if (wishlistQuery.docs.isEmpty) {
+      await FirebaseFirestore.instance.collection('Wishlist Items').add({
+        'itemName': widget.title,
+        'itemDesc': widget.description,
+        'itemPrice': widget.price,
+        'itemlink': widget.imageURL,
+      });
+
+      setState(() {
+        addedToWishlist = true;
+      });
+
+      // Show a success SnackBar
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Item added to Wishlist!',
+            textAlign: TextAlign.center,
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      if (!mounted) return;
+      // Show a SnackBar indicating the item already exists
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Item already exists in Wishlist!',
+              textAlign: TextAlign.center),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +112,6 @@ class _ProductEntry extends State<ProductEntry> {
                 onEnter: (function) => setState(() => isMouseHover = true),
                 onExit: (function) => setState(() => isMouseHover = false),
                 child: GestureDetector(
-                  onTap: goToProductPage,
                   child: // Replace the existing Container code
                       Image.network(
                     widget.imageURL,
@@ -117,16 +178,15 @@ class _ProductEntry extends State<ProductEntry> {
                       child: SizedBox(
                         width: 175,
                         child: ElevatedButton(
-                            onPressed: test,
-                            child: const Row(
-                              children: [
-                                Text("Add to wishlist"),
-                                Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 5)),
-                                Icon(Icons.add_shopping_cart_rounded),
-                              ],
-                            )),
+                          onPressed: () {
+                            if (!addedToWishlist) {
+                              addToWishlist(context);
+                            }
+                          },
+                          child: Text(addedToWishlist
+                              ? 'Added to Wishlist'
+                              : 'Add to Wishlist'),
+                        ),
                       ),
                     ),
                   ],

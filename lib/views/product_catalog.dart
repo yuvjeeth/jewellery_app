@@ -35,6 +35,7 @@ class _ProductCatalog extends State<ProductCatalog> {
       listOfProducts = filterProducts(query, allProducts);
     });
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,7 @@ class _ProductCatalog extends State<ProductCatalog> {
               width: 200,
               child: TextField(
                 controller: search,
-                onChanged: (value) {
+                onSubmitted: (value) {
                   updateUI(value);
                 },
                 decoration: const InputDecoration(
@@ -143,6 +144,23 @@ class _ProductCatalog extends State<ProductCatalog> {
       ),
       body: Column(
         children: [
+          Row(
+            children: [
+              const SizedBox(
+                width: 10,
+              ),
+              InkWell(
+                onTap: () {},
+                child: const Text(
+                  'Sort by price',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
@@ -170,9 +188,16 @@ class _ProductCatalog extends State<ProductCatalog> {
                   return GridView.builder(
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
-                    itemCount: listOfProducts.length,
+                    itemCount:
+                        listOfProducts.isEmpty ? 1 : listOfProducts.length,
                     itemBuilder: (BuildContext context, index) {
-                      return listOfProducts[index] ?? const SizedBox.shrink();
+                      return listOfProducts.isNotEmpty
+                          ? listOfProducts[index] ?? const SizedBox.shrink()
+                          : const Text(
+                              'No items found',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            );
                     },
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -184,6 +209,7 @@ class _ProductCatalog extends State<ProductCatalog> {
                     ),
                   );
                 }
+                
               },
             ),
           ),
