@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,36 +27,33 @@ class ProductEntry extends StatefulWidget {
 class _ProductEntry extends State<ProductEntry> {
   bool isMouseHover = false;
   bool addedToWishlist = false;
+  late Future<bool> wishlistStatus;
 
   @override
   void initState() {
     super.initState();
-    checkWishlistStatus();
+    wishlistStatus = checkWishlistStatus();
   }
 
   // Function to check if the item is already in the Wishlist
-  // Function to check if the item is already in the Wishlist
-  void checkWishlistStatus() async {
+  Future<bool> checkWishlistStatus() async {
     var wishlistQuery = await FirebaseFirestore.instance
         .collection('Wishlist Items')
         .where('itemName', isEqualTo: widget.title)
         .get();
 
-    setState(() {
-      addedToWishlist = wishlistQuery.docs.isNotEmpty;
-    });
+    return wishlistQuery.docs.isNotEmpty;
   }
 
   // Function to add an item to the Wishlist Items collection
-  void addToWishlist(BuildContext context) async {
-    // Check if the item already exists in the Wishlist Items collection
+  void toggleWishlist(BuildContext context) async {
     var wishlistQuery = await FirebaseFirestore.instance
         .collection('Wishlist Items')
         .where('itemName', isEqualTo: widget.title)
         .get();
 
-    // If the item doesn't exist, create a new document
     if (wishlistQuery.docs.isEmpty) {
+      // If the item doesn't exist, add it to the Wishlist
       await FirebaseFirestore.instance.collection('Wishlist Items').add({
         'itemName': widget.title,
         'itemDesc': widget.description,
@@ -82,16 +77,26 @@ class _ProductEntry extends State<ProductEntry> {
         ),
       );
     } else {
+      // If the item exists, remove it from the Wishlist
+      await FirebaseFirestore.instance
+          .collection('Wishlist Items')
+          .doc(wishlistQuery.docs.first.id)
+          .delete();
       if (!mounted) return;
-      // Show a SnackBar indicating the item already exists
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Item already exists in Wishlist!',
-              textAlign: TextAlign.center),
+          content: Text(
+            'Item removed from Wishlist!',
+            textAlign: TextAlign.center,
+          ),
           backgroundColor: Colors.red,
         ),
       );
     }
+    setState(() {
+      wishlistStatus = checkWishlistStatus();
+    });
   }
 
   @override
@@ -179,13 +184,23 @@ class _ProductEntry extends State<ProductEntry> {
                         width: 175,
                         child: ElevatedButton(
                           onPressed: () {
-                            if (!addedToWishlist) {
-                              addToWishlist(context);
-                            }
+                            toggleWishlist(context);
                           },
-                          child: Text(addedToWishlist
-                              ? 'Added to Wishlist'
-                              : 'Add to Wishlist'),
+                          child: FutureBuilder<bool>(
+                            future: wishlistStatus,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              } else {
+                                return Text(
+                                  snapshot.data!
+                                      ? 'Added to Wishlist. Click to remove'
+                                      : 'Add to Wishlist',
+                                );
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ),

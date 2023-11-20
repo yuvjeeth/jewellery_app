@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jewellery_app/views/admin_portal.dart';
+import 'package:jewellery_app/views/wishlist.dart';
 
 import 'views/product_catalog.dart';
 
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
       title: 'Jewellery Store',
       theme: _buildTheme(Brightness.light),
       debugShowCheckedModeBanner: false,
-      home: const ProductCatalog(),
+      home: const Wishlist(),
       //home: const AdminPortal(),
       //home: const ContactUs(),
     );

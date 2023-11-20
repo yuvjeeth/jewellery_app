@@ -35,7 +35,6 @@ class _ProductCatalog extends State<ProductCatalog> {
       listOfProducts = filterProducts(query, allProducts);
     });
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +208,6 @@ class _ProductCatalog extends State<ProductCatalog> {
                     ),
                   );
                 }
-                
               },
             ),
           ),
