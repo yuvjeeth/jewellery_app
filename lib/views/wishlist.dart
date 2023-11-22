@@ -29,12 +29,6 @@ class _WishlistState extends State<Wishlist> {
       QuerySnapshot querySnapshot =
           await FirebaseFirestore.instance.collection('Wishlist Items').get();
 
-      print('Number of documents: ${querySnapshot.docs.length}');
-
-      if (querySnapshot.docs.isNotEmpty) {
-        print('First document data: ${querySnapshot.docs.first.data()}');
-      }
-
       // Map Firestore data to WishlistItems widgets
       List<WishlistItems> items = querySnapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -42,13 +36,15 @@ class _WishlistState extends State<Wishlist> {
         String title = data['itemName'] ?? 'Default Title';
         String description = data['itemDesc'] ?? 'Default Description';
         double price = data['itemPrice'] ?? 0.0;
-        String imageURL = data['itemLink'] ?? 'Default Image URL';
+        String imageURL = data['itemlink'] ?? 'Default Image URL';
 
         return WishlistItems(
+          itemId: doc.id,
           title: title,
           description: description,
           price: price,
           imageURL: imageURL,
+          onRemove: () => _removeItemFromWishlist(doc.id),
         );
       }).toList();
 
@@ -58,6 +54,28 @@ class _WishlistState extends State<Wishlist> {
       });
     } catch (e) {
       print('Error fetching data: $e');
+    }
+  }
+
+  Future<void> _removeItemFromWishlist(String itemId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('Wishlist Items')
+          .doc(itemId)
+          .delete();
+
+      print('Item removed from Firebase with ID: $itemId');
+
+      // Update the state by removing the item from the wishlistItems list
+      setState(() {
+        wishlistItems.removeWhere((item) => item.itemId == itemId);
+      });
+
+      // Print a message to the console
+      print('Item with ID $itemId has been removed from the wishlist.');
+    } catch (e) {
+      print('Error removing item from Firebase: $e');
+      // Handle error appropriately
     }
   }
 
@@ -188,17 +206,19 @@ class _WishlistState extends State<Wishlist> {
           const SizedBox(
             height: 30,
           ),
-
           Expanded(
             child: ListView.builder(
               itemCount: wishlistItems.length,
               itemBuilder: (context, index) {
                 try {
                   return WishlistItems(
+                    itemId: wishlistItems[index].itemId,
                     title: wishlistItems[index].title,
                     description: wishlistItems[index].description,
                     price: wishlistItems[index].price,
                     imageURL: wishlistItems[index].imageURL,
+                    onRemove: () =>
+                        _removeItemFromWishlist(wishlistItems[index].itemId),
                   );
                 } catch (e) {
                   print('Error building wishlist item at index $index: $e');
@@ -207,11 +227,16 @@ class _WishlistState extends State<Wishlist> {
               },
             ),
           ),
-
-          // ElevatedButton(
-          //   onPressed: () {},
-          //   child: const Text('Proceed'),
-          // ),
+          const SizedBox(
+            height: 30,
+          ),
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text('Proceed'),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
         ],
       ),
     );
