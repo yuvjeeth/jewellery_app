@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jewellery_app/views/product_catalog.dart';
-
+import 'package:jewellery_app/views/login_page.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -23,7 +22,7 @@ class _WelcomeScreen extends State<WelcomeScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => const ProductCatalog(),
+        builder: (context) => const LoginPage(),
       ),
     );
   }

@@ -79,11 +79,12 @@ class _ProductCatalog extends State<ProductCatalog> {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const OurStory(),
                   ),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: const Text('Our story'),
@@ -93,11 +94,12 @@ class _ProductCatalog extends State<ProductCatalog> {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const ContactUs(),
                   ),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: const Text('Contact Us'),
@@ -107,11 +109,12 @@ class _ProductCatalog extends State<ProductCatalog> {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const Wishlist(),
                   ),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: const Text('Wishlist'),
@@ -121,11 +124,12 @@ class _ProductCatalog extends State<ProductCatalog> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const AdminLogin(),
                   ),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: const Column(
@@ -210,6 +214,9 @@ class _ProductCatalog extends State<ProductCatalog> {
                 }
               },
             ),
+          ),
+          const SizedBox(
+            height: 30,
           ),
         ],
       ),

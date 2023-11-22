@@ -26,11 +26,12 @@ class _OurStoryState extends State<OurStory> {
           children: [
             InkWell(
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const ProductCatalog(),
                   ),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: Text(
@@ -56,11 +57,12 @@ class _OurStoryState extends State<OurStory> {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const ContactUs(),
                   ),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: const Text('Contact Us'),
@@ -70,11 +72,12 @@ class _OurStoryState extends State<OurStory> {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const Wishlist(),
                   ),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: const Text('Wishlist'),

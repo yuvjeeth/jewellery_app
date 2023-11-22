@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class WishlistItems extends StatefulWidget {
@@ -49,7 +50,9 @@ class _WishlistItemsState extends State<WishlistItems> {
                   widget.imageURL,
                   fit: BoxFit.fill,
                   errorBuilder: (context, error, stackTrace) {
-                    print('Error loading image: $error');
+                    if (kDebugMode) {
+                      print('Error loading image: $error');
+                    }
                     return const Icon(Icons.error); // Show an error icon
                   },
                 ),

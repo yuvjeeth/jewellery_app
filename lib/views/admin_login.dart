@@ -118,11 +118,12 @@ class _AdminLoginState extends State<AdminLogin> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const AdminPortal(),
                         ),
+                        (Route<dynamic> route) => false,
                       );
                       if (uName.text == 'user' && uPassword.text == 'user') {
                         // Navigator.push(

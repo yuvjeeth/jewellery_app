@@ -2,8 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:jewellery_app/views/wishlist.dart';
+import 'package:jewellery_app/views/welcome_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +40,7 @@ class MyApp extends StatelessWidget {
       title: 'Jewellery Store',
       theme: _buildTheme(Brightness.light),
       debugShowCheckedModeBanner: false,
-      home: const Wishlist(),
+      home: const WelcomeScreen(),
       //home: const AdminPortal(),
       //home: const ContactUs(),
     );

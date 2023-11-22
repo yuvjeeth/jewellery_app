@@ -124,11 +124,12 @@ class _LoginPageState extends State<LoginPage> {
                       const Text('New user? '),
                       InkWell(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const SignupScreen(),
                             ),
+                            (Route<dynamic> route) => false,
                           );
                         },
                         child: const Text(

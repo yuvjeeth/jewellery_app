@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jewellery_app/views/product_catalog.dart';
@@ -53,7 +54,9 @@ class _WishlistState extends State<Wishlist> {
         wishlistItems = items;
       });
     } catch (e) {
-      print('Error fetching data: $e');
+      if (kDebugMode) {
+        print('Error fetching data: $e');
+      }
     }
   }
 
@@ -64,7 +67,9 @@ class _WishlistState extends State<Wishlist> {
           .doc(itemId)
           .delete();
 
-      print('Item removed from Firebase with ID: $itemId');
+      if (kDebugMode) {
+        print('Item removed from Firebase with ID: $itemId');
+      }
 
       // Update the state by removing the item from the wishlistItems list
       setState(() {
@@ -72,9 +77,13 @@ class _WishlistState extends State<Wishlist> {
       });
 
       // Print a message to the console
-      print('Item with ID $itemId has been removed from the wishlist.');
+      if (kDebugMode) {
+        print('Item with ID $itemId has been removed from the wishlist.');
+      }
     } catch (e) {
-      print('Error removing item from Firebase: $e');
+      if (kDebugMode) {
+        print('Error removing item from Firebase: $e');
+      }
       // Handle error appropriately
     }
   }
@@ -90,11 +99,12 @@ class _WishlistState extends State<Wishlist> {
           children: [
             InkWell(
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const ProductCatalog(),
                   ),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: Text(
@@ -111,11 +121,12 @@ class _WishlistState extends State<Wishlist> {
             const Spacer(),
             InkWell(
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const OurStory(),
                   ),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: const Text('Our story'),
@@ -125,11 +136,12 @@ class _WishlistState extends State<Wishlist> {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const ContactUs(),
                   ),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: const Text('Contact Us'),
@@ -137,20 +149,10 @@ class _WishlistState extends State<Wishlist> {
             const SizedBox(
               width: 30,
             ),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Wishlist(),
-                  ),
-                );
-              },
-              child: const Text(
-                'Wishlist',
-                style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                ),
+            const Text(
+              'Wishlist',
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
               ),
             ),
             const SizedBox(
@@ -166,11 +168,12 @@ class _WishlistState extends State<Wishlist> {
           ),
           InkWell(
             onTap: () {
-              Navigator.push(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const ProductCatalog(),
                 ),
+                (Route<dynamic> route) => false,
               );
             },
             child: const Row(
@@ -207,32 +210,57 @@ class _WishlistState extends State<Wishlist> {
             height: 30,
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: wishlistItems.length,
-              itemBuilder: (context, index) {
-                try {
-                  return WishlistItems(
-                    itemId: wishlistItems[index].itemId,
-                    title: wishlistItems[index].title,
-                    description: wishlistItems[index].description,
-                    price: wishlistItems[index].price,
-                    imageURL: wishlistItems[index].imageURL,
-                    onRemove: () =>
-                        _removeItemFromWishlist(wishlistItems[index].itemId),
-                  );
-                } catch (e) {
-                  print('Error building wishlist item at index $index: $e');
-                  return Container(); // Return an empty container in case of an error
-                }
-              },
-            ),
+            child: wishlistItems.isEmpty
+                ? const Center(
+                    child: Text(
+                      'No items in the wishlist.',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: wishlistItems.length,
+                    itemBuilder: (context, index) {
+                      try {
+                        return WishlistItems(
+                          itemId: wishlistItems[index].itemId,
+                          title: wishlistItems[index].title,
+                          description: wishlistItems[index].description,
+                          price: wishlistItems[index].price,
+                          imageURL: wishlistItems[index].imageURL,
+                          onRemove: () => _removeItemFromWishlist(
+                              wishlistItems[index].itemId),
+                        );
+                      } catch (e) {
+                        if (kDebugMode) {
+                          print(
+                            'Error building wishlist item at index $index: $e');
+                        }
+                        return Container(); // Return an empty container in case of an error
+                      }
+                    },
+                  ),
           ),
           const SizedBox(
             height: 30,
           ),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text('Proceed'),
+          wishlistItems.isNotEmpty
+              ? ElevatedButton(
+                  onPressed: () {
+                    double totalAmount = 0.0;
+
+                    for (var item in wishlistItems) {
+                      totalAmount += item.price;
+                    }
+
+                    if (kDebugMode) {
+                      print('Total Amount of Items in Wishlist: ₹$totalAmount');
+                    }
+                  },
+                  child: const Text('Proceed'),
+                )
+              : Container(),
+          const SizedBox(
+            height: 20,
           ),
           const SizedBox(
             height: 20,

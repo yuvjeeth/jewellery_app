@@ -180,58 +180,16 @@ class _AdminPortalState extends State<AdminPortal> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  try {
-                    final FirebaseFirestore firestore =
-                        FirebaseFirestore.instance;
-                    CollectionReference itemsCollection =
-                        firestore.collection('Jewellery Items');
-
-                    Map<String, dynamic> data = {
-                      'Item Name': name.text,
-                      'Item Description': description.text,
-                      'Item Price': price.text,
-                      'Item imageLink': imageLink.text,
-                    };
-
-                    await itemsCollection.add(data);
-
-                    if (kDebugMode) {
-                      print('Document added successfully');
-                    }
-                    if (!mounted) return;
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Success'),
-                          content: const Text('Item added successfully.'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-
-                    name.clear();
-                    description.clear();
-                    price.clear();
-                    imageLink.clear();
-                  } catch (error) {
-                    if (kDebugMode) {
-                      print('Error adding document: $error');
-                    }
-
+                  if (name.text == '' ||
+                      description.text == '' ||
+                      price.text == '' ||
+                      imageLink.text == '') {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: const Text('Error'),
-                          content: Text('An error occurred: $error'),
+                          content: const Text('All fields are required!'),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () {
@@ -243,6 +201,71 @@ class _AdminPortalState extends State<AdminPortal> {
                         );
                       },
                     );
+                  } else {
+                    try {
+                      final FirebaseFirestore firestore =
+                          FirebaseFirestore.instance;
+                      CollectionReference itemsCollection =
+                          firestore.collection('Jewellery Items');
+
+                      Map<String, dynamic> data = {
+                        'Item Name': name.text,
+                        'Item Description': description.text,
+                        'Item Price': price.text,
+                        'Item imageLink': imageLink.text,
+                      };
+
+                      await itemsCollection.add(data);
+
+                      if (kDebugMode) {
+                        print('Document added successfully');
+                      }
+                      if (!mounted) return;
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Success'),
+                            content: const Text('Item added successfully.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+                      name.clear();
+                      description.clear();
+                      price.clear();
+                      imageLink.clear();
+                    } catch (error) {
+                      if (kDebugMode) {
+                        print('Error adding document: $error');
+                      }
+
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Error'),
+                            content: Text('An error occurred: $error'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   }
                 },
                 child: const Text('Submit'),

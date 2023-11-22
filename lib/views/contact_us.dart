@@ -27,11 +27,12 @@ class _ContactUsState extends State<ContactUs> {
           children: [
             InkWell(
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const ProductCatalog(),
                   ),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: Text(
@@ -48,11 +49,12 @@ class _ContactUsState extends State<ContactUs> {
             const Spacer(),
             InkWell(
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const OurStory(),
                   ),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: const Text('Our story'),
@@ -60,20 +62,10 @@ class _ContactUsState extends State<ContactUs> {
             const SizedBox(
               width: 30,
             ),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ContactUs(),
-                  ),
-                );
-              },
-              child: const Text(
-                'Contact Us',
-                style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                ),
+            const Text(
+              'Contact Us',
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
               ),
             ),
             const SizedBox(
@@ -81,11 +73,12 @@ class _ContactUsState extends State<ContactUs> {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const Wishlist(),
                   ),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: const Text('Wishlist'),
