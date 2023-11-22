@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:jewellery_app/views/login_page.dart';
 import 'package:jewellery_app/views/signup_screen.dart';
 import 'package:jewellery_app/views/welcome_screen.dart';
+import 'package:jewellery_app/views/wishlist.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
       title: 'Jewellery Store',
       theme: _buildTheme(Brightness.light),
       debugShowCheckedModeBanner: false,
-      home: const WelcomeScreen(),
+      home: const Wishlist(),
       //home: const AdminPortal(),
       //home: const ContactUs(),
     );

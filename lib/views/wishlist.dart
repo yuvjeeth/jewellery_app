@@ -38,11 +38,17 @@ class _WishlistState extends State<Wishlist> {
       // Map Firestore data to WishlistItems widgets
       List<WishlistItems> items = querySnapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+        String title = data['itemName'] ?? 'Default Title';
+        String description = data['itemDesc'] ?? 'Default Description';
+        double price = data['itemPrice'] ?? 0.0;
+        String imageURL = data['itemLink'] ?? 'Default Image URL';
+
         return WishlistItems(
-          title: data['itemName'],
-          description: data['itemDesc'],
-          price: data['itemPrice'],
-          imageURL: data['itemLink'],
+          title: title,
+          description: description,
+          price: price,
+          imageURL: imageURL,
         );
       }).toList();
 
@@ -52,7 +58,6 @@ class _WishlistState extends State<Wishlist> {
       });
     } catch (e) {
       print('Error fetching data: $e');
-      // Handle error as needed
     }
   }
 
@@ -188,15 +193,21 @@ class _WishlistState extends State<Wishlist> {
             child: ListView.builder(
               itemCount: wishlistItems.length,
               itemBuilder: (context, index) {
-                return WishlistItems(
-                  title: wishlistItems[index].title,
-                  description: wishlistItems[index].description,
-                  price: wishlistItems[index].price,
-                  imageURL: wishlistItems[index].imageURL,
-                );
+                try {
+                  return WishlistItems(
+                    title: wishlistItems[index].title,
+                    description: wishlistItems[index].description,
+                    price: wishlistItems[index].price,
+                    imageURL: wishlistItems[index].imageURL,
+                  );
+                } catch (e) {
+                  print('Error building wishlist item at index $index: $e');
+                  return Container(); // Return an empty container in case of an error
+                }
               },
             ),
           ),
+
           // ElevatedButton(
           //   onPressed: () {},
           //   child: const Text('Proceed'),
