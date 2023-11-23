@@ -53,7 +53,7 @@ class _WishlistItemsState extends State<WishlistItems> {
                     if (kDebugMode) {
                       print('Error loading image: $error');
                     }
-                    return const Icon(Icons.error); // Show an error icon
+                    return const Icon(Icons.error); // Show an error icon if image cant be loaded
                   },
                 ),
               ),

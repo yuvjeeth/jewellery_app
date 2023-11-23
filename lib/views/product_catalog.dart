@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jewellery_app/views/admin_login.dart';
 import 'package:jewellery_app/widgets/product_entry.dart';
 
 import 'contact_us.dart';
+import 'login_page.dart';
 import 'our_story.dart';
 import 'wishlist.dart';
 
@@ -33,6 +35,30 @@ class _ProductCatalog extends State<ProductCatalog> {
   void updateUI(String query) {
     setState(() {
       listOfProducts = filterProducts(query, allProducts);
+    });
+  }
+
+  Future<String?> getUserName() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+      return userSnapshot['name'];
+    }
+    return null;
+  }
+
+  String? userName;
+
+  @override
+  void initState() {
+    super.initState();
+    getUserName().then((name) {
+      setState(() {
+        userName = name;
+      });
     });
   }
 
@@ -147,6 +173,53 @@ class _ProductCatalog extends State<ProductCatalog> {
       ),
       body: Column(
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Welcome, $userName!',
+                  style: const TextStyle(fontSize: 18),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        await FirebaseAuth.instance.signOut();
+                        if (!mounted) return;
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          ),
+                          (route) => false,
+                        );
+                      },
+                      child: const Row(
+                        children: [
+                          Text(
+                            'Logout',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Icon(Icons.logout),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
           Row(
             children: [
               const SizedBox(

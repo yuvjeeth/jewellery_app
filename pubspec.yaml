@@ -41,6 +41,7 @@ dependencies:
   cloud_firestore: ^4.12.2
   font_awesome_flutter: ^10.6.0
   easy_search_bar: ^2.5.0
+  firebase_auth: ^4.14.1
 
 dev_dependencies:
   flutter_test:

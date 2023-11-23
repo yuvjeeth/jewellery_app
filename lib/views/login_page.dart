@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/views/product_catalog.dart';
 import 'package:jewellery_app/views/signup_screen.dart';
@@ -10,6 +12,50 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController email = TextEditingController();
+  TextEditingController pass = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> _login() async {
+    try {
+      // Navigate to the product catalog on successful login
+      if (!mounted) return;
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ProductCatalog(),
+        ),
+        (route) => false,
+      );
+    } on FirebaseAuthException catch (e) {
+      // Handle login errors
+      if (kDebugMode) {
+        print("Error during login: ${e.message}");
+      }
+
+      // You can show an error message to the user using a SnackBar
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Incorrect login credentials'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+      email.clear();
+      pass.clear();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,11 +88,12 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 300,
                     child: TextField(
+                      controller: email,
                       keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(10),
@@ -73,12 +120,13 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 300,
                     child: TextField(
+                      controller: pass,
                       keyboardType: TextInputType.emailAddress,
                       obscureText: true,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(10),
@@ -104,15 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ProductCatalog(),
-                        ),
-                        (route) => false,
-                      );
-                    },
+                    onPressed: _login,
                     child: const Text('Login'),
                   ),
                   const SizedBox(
