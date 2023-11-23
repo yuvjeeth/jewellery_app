@@ -42,7 +42,6 @@ class MyApp extends StatelessWidget {
       theme: _buildTheme(Brightness.light),
       debugShowCheckedModeBanner: false,
       home: const WelcomeScreen(),
-
     );
   }
 }

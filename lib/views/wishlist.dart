@@ -166,28 +166,32 @@ class _WishlistState extends State<Wishlist> {
           const SizedBox(
             height: 20,
           ),
-          InkWell(
-            onTap: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ProductCatalog(),
+          Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProductCatalog(),
+                    ),
+                    (Route<dynamic> route) => false,
+                  );
+                },
+                child: const Row(
+                  children: [
+                    Icon(Icons.arrow_back),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Continue Shopping',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
                 ),
-                (Route<dynamic> route) => false,
-              );
-            },
-            child: const Row(
-              children: [
-                Icon(Icons.arrow_back),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  'Continue Shopping',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
           const SizedBox(
             height: 50,
@@ -233,7 +237,7 @@ class _WishlistState extends State<Wishlist> {
                       } catch (e) {
                         if (kDebugMode) {
                           print(
-                            'Error building wishlist item at index $index: $e');
+                              'Error building wishlist item at index $index: $e');
                         }
                         return Container(); // Return an empty container in case of an error
                       }
