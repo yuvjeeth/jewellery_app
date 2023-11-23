@@ -18,6 +18,11 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _login() async {
     try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email.text.trim(),
+        password: pass.text.trim(),
+      );
+
       // Navigate to the product catalog on successful login
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(
