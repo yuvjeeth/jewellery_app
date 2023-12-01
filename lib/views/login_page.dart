@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
         print("Error during login: ${e.message}");
       }
 
-      // You can show an error message to the user using a SnackBar
+      // You can show an error message to the user using a dialog
       showDialog(
         context: context,
         builder: (BuildContext context) {

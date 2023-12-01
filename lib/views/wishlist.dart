@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confetti/confetti.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,6 +21,8 @@ class Wishlist extends StatefulWidget {
 class _WishlistState extends State<Wishlist> {
   @override
   void initState() {
+    _confettiController =
+        ConfettiController(duration: const Duration(seconds: 1));
     super.initState();
     // Call the function to fetch data when the widget is initialized
     fetchDataFromFirestore();
@@ -88,8 +93,42 @@ class _WishlistState extends State<Wishlist> {
     }
   }
 
+  late ConfettiController _confettiController;
+
+  @override
+  void dispose() {
+    // Dispose the ConfettiController
+    _confettiController.dispose();
+    super.dispose();
+  }
+
+  Path drawStar(Size size) {
+    // Method to convert degree to radians
+    double degToRad(double deg) => deg * (pi / 180.0);
+
+    const numberOfPoints = 5;
+    final halfWidth = size.width / 2;
+    final externalRadius = halfWidth;
+    final internalRadius = halfWidth / 2.5;
+    final degreesPerStep = degToRad(360 / numberOfPoints);
+    final halfDegreesPerStep = degreesPerStep / 2;
+    final path = Path();
+    final fullAngle = degToRad(360);
+    path.moveTo(size.width, halfWidth);
+
+    for (double step = 0; step < fullAngle; step += degreesPerStep) {
+      path.lineTo(halfWidth + externalRadius * cos(step),
+          halfWidth + externalRadius * sin(step));
+      path.lineTo(halfWidth + internalRadius * cos(step + halfDegreesPerStep),
+          halfWidth + internalRadius * sin(step + halfDegreesPerStep));
+    }
+    path.close();
+    return path;
+  }
+
   @override
   Widget build(BuildContext context) {
+    GlobalKey _buttonKey = GlobalKey();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -249,6 +288,7 @@ class _WishlistState extends State<Wishlist> {
           ),
           wishlistItems.isNotEmpty
               ? ElevatedButton(
+                  key: _buttonKey,
                   onPressed: () {
                     double totalAmount = 0.0;
 
@@ -259,10 +299,19 @@ class _WishlistState extends State<Wishlist> {
                     if (kDebugMode) {
                       print('Total Amount of Items in Wishlist: ₹$totalAmount');
                     }
+                    _confettiController.play();
                   },
                   child: const Text('Proceed'),
                 )
               : Container(),
+          // ConfettiWidget(
+          //   confettiController: _confettiController,
+          //   blastDirection: -pi / 2,
+          //   emissionFrequency: 0.02,
+          //   numberOfParticles: 20,
+          //   gravity: 0.1,
+          //   createParticlePath: drawStar,
+          // ),
           const SizedBox(
             height: 20,
           ),
