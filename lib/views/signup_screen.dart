@@ -71,7 +71,7 @@ class _SignupScreenState extends State<SignupScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Error'),
-            content:  Text('$e'),
+            content: Text('$e'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {

@@ -254,7 +254,7 @@ class _ProductCatalog extends State<ProductCatalog> {
                       width: double.infinity,
                       title: doc['Item Name'],
                       description: doc['Item Description'],
-                      price: double.parse(doc['Item Price']),
+                      weight: double.parse(doc['Item Weight']),
                       imageURL: doc['Item imageLink'],
                     );
                   }).toList();

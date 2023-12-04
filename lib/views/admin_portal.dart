@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +14,7 @@ class AdminPortal extends StatefulWidget {
 
 class _AdminPortalState extends State<AdminPortal> {
   TextEditingController name = TextEditingController();
-  TextEditingController price = TextEditingController();
+  TextEditingController weight = TextEditingController();
   TextEditingController description = TextEditingController();
   TextEditingController imageLink = TextEditingController();
 
@@ -121,7 +123,7 @@ class _AdminPortalState extends State<AdminPortal> {
                 height: 15,
               ),
               TextField(
-                controller: price,
+                controller: weight,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(
@@ -143,7 +145,7 @@ class _AdminPortalState extends State<AdminPortal> {
                     borderSide: BorderSide(color: Colors.deepPurple),
                   ),
                   floatingLabelStyle: TextStyle(color: Colors.deepPurple),
-                  labelText: 'Price',
+                  labelText: 'Weight of gold (in gms)',
                 ),
               ),
               const SizedBox(
@@ -182,7 +184,7 @@ class _AdminPortalState extends State<AdminPortal> {
                 onPressed: () async {
                   if (name.text == '' ||
                       description.text == '' ||
-                      price.text == '' ||
+                      weight.text == '' ||
                       imageLink.text == '') {
                     showDialog(
                       context: context,
@@ -211,7 +213,7 @@ class _AdminPortalState extends State<AdminPortal> {
                       Map<String, dynamic> data = {
                         'Item Name': name.text,
                         'Item Description': description.text,
-                        'Item Price': price.text,
+                        'Item Weight': weight.text,
                         'Item imageLink': imageLink.text,
                       };
 
@@ -241,7 +243,7 @@ class _AdminPortalState extends State<AdminPortal> {
 
                       name.clear();
                       description.clear();
-                      price.clear();
+                      weight.clear();
                       imageLink.clear();
                     } catch (error) {
                       if (kDebugMode) {
@@ -269,6 +271,56 @@ class _AdminPortalState extends State<AdminPortal> {
                   }
                 },
                 child: const Text('Submit'),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  const String apiKey = 'goldapi-d6zfrlpqsa4d3-io';
+
+                  // Make a GET request to the Gold API
+                  final response = await http.get(
+                    Uri.parse('https://www.goldapi.io/api/XAU/INR'),
+                    headers: {'x-access-token': apiKey},
+                  );
+
+                  if (response.statusCode == 200) {
+                    // Parse the JSON response
+                    final Map<String, dynamic> data =
+                        json.decode(response.body);
+
+                    // Extract the gold rate from the response
+                    final double goldRate = data['price_gram_24k'];
+
+                    // Update the data in Firebase collection 'gold price'
+                    try {
+                      await FirebaseFirestore.instance
+                          .collection('Daily Gold Rate')
+                          .doc('gold_rate')
+                          .set(
+                        {'rate': goldRate},
+                      );
+
+                      // Print a message to the console
+                      if (kDebugMode) {
+                        print('Gold rate updated in Firebase: $goldRate');
+                      }
+                    } catch (e) {
+                      // Handle error appropriately
+                      if (kDebugMode) {
+                        print('Error updating gold rate in Firebase: $e');
+                      }
+                    }
+                  } else {
+                    // Handle HTTP error
+                    if (kDebugMode) {
+                      print(
+                          'Error fetching gold rate from API. Status Code: ${response.statusCode}');
+                    }
+                  }
+                },
+                child: const Text('Update Goldrate'),
               ),
             ],
           ),

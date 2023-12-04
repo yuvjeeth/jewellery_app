@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/foundation.dart';
@@ -7,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jewellery_app/views/product_catalog.dart';
 
+import 'dart:math';
 import '../widgets/wishlist_items.dart';
 import 'contact_us.dart';
 import 'our_story.dart';
@@ -128,7 +127,7 @@ class _WishlistState extends State<Wishlist> {
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey _buttonKey = GlobalKey();
+    GlobalKey buttonKey = GlobalKey();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -278,7 +277,7 @@ class _WishlistState extends State<Wishlist> {
                           print(
                               'Error building wishlist item at index $index: $e');
                         }
-                        return Container(); // Return an empty container in case of an error
+                        return Container();
                       }
                     },
                   ),
@@ -288,30 +287,50 @@ class _WishlistState extends State<Wishlist> {
           ),
           wishlistItems.isNotEmpty
               ? ElevatedButton(
-                  key: _buttonKey,
-                  onPressed: () {
+                  key: buttonKey,
+                  onPressed: () async {
                     double totalAmount = 0.0;
-
                     for (var item in wishlistItems) {
                       totalAmount += item.price;
                     }
-
                     if (kDebugMode) {
                       print('Total Amount of Items in Wishlist: ₹$totalAmount');
                     }
                     _confettiController.play();
+
+                    // Show congratulatory dialog
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Congratulations!'),
+                          content:  Text(
+                            'Your order has been received. Please wait 2-3 business days\n to collect your order from our store\n\n Total: ₹$totalAmount\n Order ID: xyz',
+                          ),
+                          actions: <Widget>[
+                            // Confetti widget inside the AlertDialog
+                            ConfettiWidget(
+                              confettiController: _confettiController,
+                              blastDirection: -pi / 1.5,
+                              emissionFrequency: 0.05,
+                              numberOfParticles: 20,
+                              gravity: 0.1,
+                              createParticlePath: drawStar,
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   child: const Text('Proceed'),
                 )
               : Container(),
-          // ConfettiWidget(
-          //   confettiController: _confettiController,
-          //   blastDirection: -pi / 2,
-          //   emissionFrequency: 0.02,
-          //   numberOfParticles: 20,
-          //   gravity: 0.1,
-          //   createParticlePath: drawStar,
-          // ),
           const SizedBox(
             height: 20,
           ),

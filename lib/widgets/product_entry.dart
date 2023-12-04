@@ -8,7 +8,7 @@ class ProductEntry extends StatefulWidget {
 
   final String title;
   final String description;
-  final double price;
+  final double weight;
   final String imageURL;
   final double height;
   final double width;
@@ -17,7 +17,7 @@ class ProductEntry extends StatefulWidget {
     super.key,
     required this.title,
     required this.description,
-    required this.price,
+    required this.weight,
     required this.imageURL,
     this.height = 0,
     this.width = 0,
@@ -28,11 +28,51 @@ class _ProductEntry extends State<ProductEntry> {
   bool isMouseHover = false;
   bool addedToWishlist = false;
   late Future<bool> wishlistStatus;
+  double goldRate = 0.0;
 
   @override
   void initState() {
     super.initState();
     wishlistStatus = checkWishlistStatus();
+    fetchGoldRate();
+  }
+
+  Future<void> fetchGoldRate() async {
+    try {
+      var snapshot = await FirebaseFirestore.instance
+          .collection('Daily Gold Rate')
+          .doc(
+              'gold_rate') // Replace with the document ID or any method to fetch the gold rate
+          .get();
+
+      if (snapshot.exists) {
+        setState(() {
+          goldRate = snapshot['rate'];
+        });
+      }
+    } catch (e) {
+      print('Error fetching gold rate: $e');
+    }
+  }
+
+  double calculateFinalAmount() {
+    // Assuming GST is standard at 3%
+    const gstRate = 3;
+
+    double makingCharges = 0.0;
+    if (widget.weight <= 1) {
+      makingCharges = 600;
+    } else if (widget.weight <= 2) {
+      makingCharges = 550;
+    } else if (widget.weight <= 4) {
+      makingCharges = 500;
+    } else {
+      makingCharges = 450 * widget.weight;
+    }
+
+    double gstAmount = (goldRate + makingCharges) * (gstRate / 100);
+
+    return goldRate + makingCharges + gstAmount;
   }
 
   // Function to check if the item is already in the Wishlist
@@ -57,7 +97,7 @@ class _ProductEntry extends State<ProductEntry> {
       await FirebaseFirestore.instance.collection('Wishlist Items').add({
         'itemName': widget.title,
         'itemDesc': widget.description,
-        'itemPrice': widget.price,
+        'itemPrice': widget.weight,
         'itemlink': widget.imageURL,
       });
 
@@ -172,10 +212,10 @@ class _ProductEntry extends State<ProductEntry> {
                     Align(
                       alignment: const Alignment(-0.5, 0),
                       child: Text(
-                        "₹${widget.price}",
+                        "₹${calculateFinalAmount().toStringAsFixed(0)}",
                         style: GoogleFonts.aboreto(
                             textStyle: const TextStyle(
-                                fontSize: 26, fontWeight: FontWeight.bold)),
+                                fontSize: 28, fontWeight: FontWeight.bold)),
                       ),
                     ),
                     Align(

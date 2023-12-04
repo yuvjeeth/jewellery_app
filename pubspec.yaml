@@ -43,6 +43,7 @@ dependencies:
   easy_search_bar: ^2.5.0
   firebase_auth: ^4.14.1
   confetti: ^0.7.0
+  http: ^1.1.0
 
 dev_dependencies:
   flutter_test:
