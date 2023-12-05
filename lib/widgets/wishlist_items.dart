@@ -84,7 +84,7 @@ class _WishlistItemsState extends State<WishlistItems> {
                 width: 150,
               ),
               Text(
-                "₹${widget.price}",
+                "₹${widget.price.toStringAsFixed(0)}",
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),

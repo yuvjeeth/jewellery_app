@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -41,8 +42,7 @@ class _ProductEntry extends State<ProductEntry> {
     try {
       var snapshot = await FirebaseFirestore.instance
           .collection('Daily Gold Rate')
-          .doc(
-              'gold_rate') // Replace with the document ID or any method to fetch the gold rate
+          .doc('gold_rate')
           .get();
 
       if (snapshot.exists) {
@@ -51,7 +51,9 @@ class _ProductEntry extends State<ProductEntry> {
         });
       }
     } catch (e) {
-      print('Error fetching gold rate: $e');
+      if (kDebugMode) {
+        print('Error fetching gold rate: $e');
+      }
     }
   }
 
@@ -97,7 +99,7 @@ class _ProductEntry extends State<ProductEntry> {
       await FirebaseFirestore.instance.collection('Wishlist Items').add({
         'itemName': widget.title,
         'itemDesc': widget.description,
-        'itemPrice': widget.weight,
+        'itemPrice': calculateFinalAmount(), // Use the calculated amount
         'itemlink': widget.imageURL,
       });
 

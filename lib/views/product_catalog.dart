@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jewellery_app/views/admin_login.dart';
@@ -21,6 +22,7 @@ class _ProductCatalog extends State<ProductCatalog> {
   TextEditingController search = TextEditingController();
   List<Widget?> allProducts = [];
   List<Widget?> listOfProducts = [];
+  double goldRate = 0.0;
 
   List<Widget?> filterProducts(String query, List<Widget?> allProducts) {
     return allProducts.where((product) {
@@ -50,11 +52,33 @@ class _ProductCatalog extends State<ProductCatalog> {
     return null;
   }
 
+  Future<void> fetchGoldRate() async {
+    try {
+      var snapshot = await FirebaseFirestore.instance
+          .collection('Daily Gold Rate')
+          .doc('gold_rate')
+          .get();
+
+      if (snapshot.exists) {
+        setState(() {
+          goldRate = snapshot['rate'];
+        });
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error fetching gold rate: $e');
+      }
+    }
+  }
+
   String? userName;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      fetchGoldRate();
+    });
     getUserName().then((name) {
       setState(() {
         userName = name;
@@ -214,6 +238,27 @@ class _ProductCatalog extends State<ProductCatalog> {
                     ),
                   ],
                 ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
+              const SizedBox(
+                width: 10,
+              ),
+              const Text(
+                'Todays Goldrate: ',
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(
+                width: 2,
+              ),
+              Text(
+                '₹${goldRate.toStringAsFixed(2)}',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ],
           ),

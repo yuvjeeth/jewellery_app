@@ -92,6 +92,29 @@ class _WishlistState extends State<Wishlist> {
     }
   }
 
+  Future<void> _clearWishlist() async {
+    try {
+      // Delete all documents from the 'Wishlist Items' collection
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('Wishlist Items').get();
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      setState(() {
+        wishlistItems.clear();
+      });
+
+      if (kDebugMode) {
+        print('All items removed from the Wishlist.');
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error clearing wishlist: $e');
+      }
+    }
+  }
+
   late ConfettiController _confettiController;
 
   @override
@@ -297,15 +320,14 @@ class _WishlistState extends State<Wishlist> {
                       print('Total Amount of Items in Wishlist: ₹$totalAmount');
                     }
                     _confettiController.play();
-
                     // Show congratulatory dialog
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: const Text('Congratulations!'),
-                          content:  Text(
-                            'Your order has been received. Please wait 2-3 business days\n to collect your order from our store\n\n Total: ₹$totalAmount\n Order ID: xyz',
+                          content: Text(
+                            'Your order has been received. Please wait 2-3 business days\n to collect your order from our store\n\n Total: ₹${totalAmount.toStringAsFixed(0)}\n Order ID: xyz',
                           ),
                           actions: <Widget>[
                             // Confetti widget inside the AlertDialog
@@ -319,7 +341,15 @@ class _WishlistState extends State<Wishlist> {
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.of(context).pop();
+                                _clearWishlist();
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ProductCatalog(),
+                                  ),
+                                  (Route<dynamic> route) => false,
+                                );
                               },
                               child: const Text('OK'),
                             ),
