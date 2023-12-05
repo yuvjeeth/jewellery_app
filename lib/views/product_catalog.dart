@@ -258,7 +258,8 @@ class _ProductCatalog extends State<ProductCatalog> {
               ),
               Text(
                 '₹${goldRate.toStringAsFixed(2)}',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ],
           ),

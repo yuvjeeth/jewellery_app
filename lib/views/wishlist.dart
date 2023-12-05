@@ -148,6 +148,22 @@ class _WishlistState extends State<Wishlist> {
     return path;
   }
 
+  String generateRandomString(int length) {
+    const String capitalLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const String smallLetters = 'abcdefghijklmnopqrstuvwxyz';
+    const String numbers = '0123456789';
+
+    const String allCharacters = '$capitalLetters$smallLetters$numbers';
+
+    final Random random = Random();
+    List<int> charCodes = List.generate(
+      length,
+      (index) => allCharacters.codeUnitAt(random.nextInt(allCharacters.length)),
+    );
+
+    return String.fromCharCodes(charCodes);
+  }
+
   @override
   Widget build(BuildContext context) {
     GlobalKey buttonKey = GlobalKey();
@@ -327,7 +343,7 @@ class _WishlistState extends State<Wishlist> {
                         return AlertDialog(
                           title: const Text('Congratulations!'),
                           content: Text(
-                            'Your order has been received. Please wait 2-3 business days\n to collect your order from our store\n\n Total: ₹${totalAmount.toStringAsFixed(0)}\n Order ID: xyz',
+                            'Your order has been received. Please wait 2-3 business days\n to collect your order from our store\n\n Total: ₹${totalAmount.toStringAsFixed(0)}\n Order ID: ${generateRandomString(7)}',
                           ),
                           actions: <Widget>[
                             // Confetti widget inside the AlertDialog
