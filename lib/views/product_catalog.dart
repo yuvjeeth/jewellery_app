@@ -22,6 +22,8 @@ class _ProductCatalog extends State<ProductCatalog> {
   TextEditingController search = TextEditingController();
   List<Widget?> allProducts = [];
   List<Widget?> listOfProducts = [];
+  List<Widget?> productsInAscending = [];
+  bool ascend = false;
   double goldRate = 0.0;
 
   List<Widget?> filterProducts(String query, List<Widget?> allProducts) {
@@ -272,68 +274,153 @@ class _ProductCatalog extends State<ProductCatalog> {
                 width: 10,
               ),
               InkWell(
-                onTap: () {},
-                child: const Text(
-                  'Sort by price',
-                  style: TextStyle(fontSize: 18),
-                ),
+                onTap: () {
+                  setState(() {
+                    ascend = true;
+                  });
+                },
+                child: ascend
+                    ? InkWell(
+                        onTap: () {
+                          setState(() {
+                            ascend =
+                                false; // Set ascend to false when "Clear Filter" is tapped
+                          });
+                        },
+                        child: const Text(
+                          'Clear Filter',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      )
+                    : const Text(
+                        'Sort by price',
+                        style: TextStyle(fontSize: 18),
+                      ),
               ),
             ],
           ),
           const SizedBox(
             height: 10,
           ),
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('Jewellery Items')
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else {
-                  allProducts = snapshot.data!.docs.map((doc) {
-                    return ProductEntry(
-                      height: 570,
-                      width: double.infinity,
-                      title: doc['Item Name'],
-                      description: doc['Item Description'],
-                      weight: double.parse(doc['Item Weight']),
-                      imageURL: doc['Item imageLink'],
-                    );
-                  }).toList();
+          ascend
+              ? Expanded(
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('Jewellery Items')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else {
+                        allProducts = snapshot.data!.docs.map((doc) {
+                          return ProductEntry(
+                            height: 570,
+                            width: double.infinity,
+                            title: doc['Item Name'],
+                            description: doc['Item Description'],
+                            weight: double.parse(doc['Item Weight']),
+                            imageURL: doc['Item imageLink'],
+                          );
+                        }).toList();
 
-                  listOfProducts = filterProducts(search.text, allProducts);
+                        // Sort the products based on weight in ascending order
+                        allProducts.sort((a, b) => (a as ProductEntry)
+                            .weight
+                            .compareTo((b as ProductEntry).weight));
 
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount:
-                        listOfProducts.isEmpty ? 1 : listOfProducts.length,
-                    itemBuilder: (BuildContext context, index) {
-                      return listOfProducts.isNotEmpty
-                          ? listOfProducts[index] ?? const SizedBox.shrink()
-                          : const Text(
-                              'No items found',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            );
+                        // Assign the sorted products to ProductsInAscending list
+                        productsInAscending = List.from(allProducts);
+
+                        listOfProducts =
+                            filterProducts(search.text, allProducts);
+
+                        return GridView.builder(
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: listOfProducts.isEmpty
+                              ? 1
+                              : listOfProducts.length,
+                          itemBuilder: (BuildContext context, index) {
+                            return listOfProducts.isNotEmpty
+                                ? listOfProducts[index] ??
+                                    const SizedBox.shrink()
+                                : const Text(
+                                    'No items found',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  );
+                          },
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 0.5625,
+                            crossAxisSpacing: 0.0,
+                            mainAxisSpacing: 5,
+                            mainAxisExtent: 500,
+                          ),
+                        );
+                      }
                     },
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 0.5625,
-                      crossAxisSpacing: 0.0,
-                      mainAxisSpacing: 5,
-                      mainAxisExtent: 500,
-                    ),
-                  );
-                }
-              },
-            ),
-          ),
+                  ),
+                )
+              : Expanded(
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('Jewellery Items')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else {
+                        allProducts = snapshot.data!.docs.map((doc) {
+                          return ProductEntry(
+                            height: 570,
+                            width: double.infinity,
+                            title: doc['Item Name'],
+                            description: doc['Item Description'],
+                            weight: double.parse(doc['Item Weight']),
+                            imageURL: doc['Item imageLink'],
+                          );
+                        }).toList();
+
+                        listOfProducts =
+                            filterProducts(search.text, allProducts);
+
+                        return GridView.builder(
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: listOfProducts.isEmpty
+                              ? 1
+                              : listOfProducts.length,
+                          itemBuilder: (BuildContext context, index) {
+                            return listOfProducts.isNotEmpty
+                                ? listOfProducts[index] ??
+                                    const SizedBox.shrink()
+                                : const Text(
+                                    'No items found',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  );
+                          },
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 0.5625,
+                            crossAxisSpacing: 0.0,
+                            mainAxisSpacing: 5,
+                            mainAxisExtent: 500,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
           const SizedBox(
             height: 30,
           ),

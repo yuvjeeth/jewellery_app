@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jewellery_app/views/product_catalog.dart';
 
 import 'package:jewellery_app/views/welcome_screen.dart';
 
@@ -30,7 +31,6 @@ class MyApp extends StatelessWidget {
 
     return baseTheme.copyWith(
       textTheme: GoogleFonts.latoTextTheme(baseTheme.textTheme),
-      useMaterial3: true,
       colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.brown),
     );
   }
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       title: 'Jewellery Store',
       theme: _buildTheme(Brightness.light),
       debugShowCheckedModeBanner: false,
-      home: const WelcomeScreen(),
+      home: const ProductCatalog(),
     );
   }
 }
