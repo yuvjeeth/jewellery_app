@@ -52,6 +52,21 @@ class _ContactUsState extends State<ContactUs> {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
+                    builder: (context) => const ProductCatalog(),
+                  ),
+                  (Route<dynamic> route) => false,
+                );
+              },
+              child: const Text('Home'),
+            ),
+            const SizedBox(
+              width: 30,
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
                     builder: (context) => const OurStory(),
                   ),
                   (Route<dynamic> route) => false,
@@ -110,7 +125,7 @@ class _ContactUsState extends State<ContactUs> {
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                   child: SizedBox(
                     height: 155,
-                    width: 310,
+                    width: 320,
                     child: Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Column(

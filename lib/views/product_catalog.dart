@@ -129,6 +129,13 @@ class _ProductCatalog extends State<ProductCatalog> {
             const SizedBox(
               width: 60,
             ),
+            const Text(
+              'Home',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+            const SizedBox(
+              width: 30,
+            ),
             InkWell(
               onTap: () {
                 Navigator.pushAndRemoveUntil(

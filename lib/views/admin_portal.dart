@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:jewellery_app/views/delete_items.dart';
 import 'package:jewellery_app/views/product_catalog.dart';
 
 class AdminPortal extends StatefulWidget {
@@ -320,7 +321,22 @@ class _AdminPortalState extends State<AdminPortal> {
                     }
                   }
                 },
-                child: const Text('Update Goldrate'),
+                child: const Text('Update Gold rate'),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DeleteItems(),
+                    ),
+                    (Route<dynamic> route) => false,
+                  );
+                },
+                child: const Text('Delete items'),
               ),
             ],
           ),

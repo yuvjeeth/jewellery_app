@@ -2,9 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jewellery_app/views/product_catalog.dart';
-
-import 'package:jewellery_app/views/welcome_screen.dart';
+import 'package:jewellery_app/views/contact_us.dart';
+import 'package:jewellery_app/views/delete_items.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +40,7 @@ class MyApp extends StatelessWidget {
       title: 'Jewellery Store',
       theme: _buildTheme(Brightness.light),
       debugShowCheckedModeBanner: false,
-      home: const ProductCatalog(),
+      home: const DeleteItems(),
     );
   }
 }
@@ -50,13 +49,16 @@ class MyApp extends StatelessWidget {
 /*
 To Do:
 
-Add something else if sort doesnt work
-
 Done:
+Added sorting feature
 Add option for daily gold rate, and change price after calculating formula
 gold rate+making charges()+gst (3%)
 0-1gm - 600 , 1-2gm - 550 , 2-4gm - 500 , 4gm and above 450 per gram
 
 Add a dialogue box to confirm the wishlist items
+
+Add Home text and map that functionality
+Add Phone number in sign up
+Change admin portal to delete items
 
 */

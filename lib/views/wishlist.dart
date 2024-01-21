@@ -201,6 +201,21 @@ class _WishlistState extends State<Wishlist> {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
+                    builder: (context) => const ProductCatalog(),
+                  ),
+                  (Route<dynamic> route) => false,
+                );
+              },
+              child: const Text('Home'),
+            ),
+            const SizedBox(
+              width: 30,
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
                     builder: (context) => const OurStory(),
                   ),
                   (Route<dynamic> route) => false,

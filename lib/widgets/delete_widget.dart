@@ -1,0 +1,104 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+class DeleteWidget extends StatefulWidget {
+  @override
+  State<DeleteWidget> createState() => _DeleteWidgetState();
+  final String title;
+  final String imageURL;
+  final Function()? onRemove;
+
+  const DeleteWidget({
+    super.key,
+    required this.title,
+    required this.imageURL,
+    this.onRemove,
+  });
+}
+
+class _DeleteWidgetState extends State<DeleteWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8, right: 8),
+      child: Container(
+        height: 150,
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(width: 1.0, color: Colors.black),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              const SizedBox(
+                width: 10,
+              ),
+              SizedBox(
+                width: 200,
+                height: 200,
+                child: Image.network(
+                  widget.imageURL,
+                  fit: BoxFit.fill,
+                  errorBuilder: (context, error, stackTrace) {
+                    if (kDebugMode) {
+                      print('Error loading image: $error');
+                    }
+                    return const Icon(Icons
+                        .error); // Show an error icon if image cant be loaded
+                  },
+                ),
+              ),
+              const SizedBox(
+                width: 70,
+              ),
+              SizedBox(
+                width: 150,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      widget.title,
+                      style: const TextStyle(
+                          fontSize: 22, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                width: 150,
+              ),
+              TextButton(
+                onPressed: () {
+                  if (widget.onRemove != null) {
+                    widget.onRemove!();
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                child: const Row(
+                  children: [
+                    Text(
+                      'Remove from Wishlist',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Icon(
+                      Icons.delete,
+                      color: Colors.grey,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

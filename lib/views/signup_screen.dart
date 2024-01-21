@@ -14,11 +14,15 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
+  TextEditingController phone = TextEditingController();
   TextEditingController pass = TextEditingController();
 
   Future<void> registerUser() async {
     try {
-      if (name.text == '' || email.text == '' || pass.text == '') {
+      if (name.text == '' ||
+          email.text == '' ||
+          pass.text == '' ||
+          phone.text == '') {
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -50,6 +54,7 @@ class _SignupScreenState extends State<SignupScreen> {
             .set({
           'name': name.text.trim(),
           'email': email.text.trim(),
+          'phone': phone.text.trim(),
           'password': pass.text.trim(),
         });
         if (!mounted) return;
@@ -178,6 +183,38 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         floatingLabelStyle: TextStyle(color: Colors.deepPurple),
                         labelText: 'Email',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    width: 300,
+                    child: TextField(
+                      controller: phone,
+                      keyboardType: TextInputType.phone,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide(color: Colors.deepPurple),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide(color: Colors.deepPurple),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide(color: Colors.deepPurple),
+                        ),
+                        floatingLabelStyle: TextStyle(color: Colors.deepPurple),
+                        labelText: 'Phone',
                       ),
                     ),
                   ),

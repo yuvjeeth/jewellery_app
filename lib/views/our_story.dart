@@ -46,6 +46,21 @@ class _OurStoryState extends State<OurStory> {
               ),
             ),
             const Spacer(),
+            InkWell(
+              onTap: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProductCatalog(),
+                  ),
+                  (Route<dynamic> route) => false,
+                );
+              },
+              child: const Text('Home'),
+            ),
+            const SizedBox(
+              width: 30,
+            ),
             const Text(
               'Our story',
               style: TextStyle(
