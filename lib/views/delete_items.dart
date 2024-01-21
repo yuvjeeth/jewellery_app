@@ -51,17 +51,22 @@ class _DeleteItemsState extends State<DeleteItems> {
             if (snapshot.hasError) {
               return const Text('Error fetching data');
             }
-        
+
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             }
-        
+
             final data = snapshot.data;
-        
+
+            if (data!.docs.isEmpty) {
+              // Display message when no items are present
+              return const Text('No items found.');
+            }
+
             return SizedBox(
               width: 500,
               child: ListView.builder(
-                itemCount: data!.docs.length,
+                itemCount: data.docs.length,
                 itemBuilder: (context, index) {
                   final item = data.docs[index];
                   return _buildItemWidget(item);
@@ -85,8 +90,8 @@ class _DeleteItemsState extends State<DeleteItems> {
             const SizedBox(height: 8),
             Image.network(
               item['Item imageLink'].toString(),
-              height: 100, // Adjust the height as needed
-              width: 100, // Adjust the width as needed
+              height: 100,
+              width: 100,
               fit: BoxFit.cover,
             ),
           ],

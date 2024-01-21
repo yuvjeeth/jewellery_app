@@ -2,8 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jewellery_app/views/contact_us.dart';
-import 'package:jewellery_app/views/delete_items.dart';
 import 'package:jewellery_app/views/welcome_screen.dart';
 
 Future<void> main() async {
