@@ -118,20 +118,20 @@ class _AdminLoginState extends State<AdminLogin> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AdminPortal(),
-                        ),
-                        (Route<dynamic> route) => false,
-                      );
-                      if (uName.text == 'user' && uPassword.text == 'user') {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => const AdminPortal(),
-                        //   ),
-                        // );
+                      // Navigator.pushAndRemoveUntil(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => const AdminPortal(),
+                      //   ),
+                      //   (Route<dynamic> route) => false,
+                      // );
+                      if (uName.text == 'admin' && uPassword.text == 'admin') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AdminPortal(),
+                          ),
+                        );
                         uName.clear();
                         uPassword.clear();
                         if (kDebugMode) {
@@ -152,6 +152,7 @@ class _AdminLoginState extends State<AdminLogin> {
                                 Navigator.of(context).pop();
                                 uName.clear();
                                 uPassword.clear();
+                                print('Cleared from admin');
                               },
                               child: const Text(
                                 'OK',
@@ -179,6 +180,3 @@ class _AdminLoginState extends State<AdminLogin> {
     );
   }
 }
-
-// add daily gold rate
-//search and sort
