@@ -59,8 +59,9 @@ class _ProductEntry extends State<ProductEntry> {
 
   double calculateFinalAmount() {
     // Assuming GST is standard at 3%
-    const gstRate = 3;
+    const gstRate = 3 / 100; // Convert GST rate to decimal or use 0.03 directly
 
+    // Calculate making charges based on weight
     double makingCharges = 0.0;
     if (widget.weight <= 1) {
       makingCharges = 600;
@@ -72,9 +73,13 @@ class _ProductEntry extends State<ProductEntry> {
       makingCharges = 450 * widget.weight;
     }
 
-    double gstAmount = (goldRate + makingCharges) * (gstRate / 100);
+    double goldAmount = goldRate * widget.weight;
 
-    return goldRate + makingCharges + gstAmount;
+    double gstAmount = (goldAmount + makingCharges) * gstRate;
+
+    double finalAmount = goldAmount + makingCharges + gstAmount;
+
+    return finalAmount;
   }
 
   // Function to check if the item is already in the Wishlist
