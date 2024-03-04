@@ -42,8 +42,7 @@ class MyApp extends StatelessWidget {
       title: 'Jewellery Store',
       theme: _buildTheme(Brightness.light),
       debugShowCheckedModeBanner: false,
-      home: AdminPortal(),
-      //home: const WelcomeScreen(),
+      home: const WelcomeScreen(),
     );
   }
 }
