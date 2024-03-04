@@ -70,14 +70,15 @@ class _ProductEntry extends State<ProductEntry> {
     } else if (widget.weight <= 4) {
       makingCharges = 500;
     } else {
-      makingCharges = 450 * widget.weight;
+      makingCharges = 450;
     }
 
     double goldAmount = goldRate * widget.weight;
 
     double gstAmount = (goldAmount + makingCharges) * gstRate;
 
-    double finalAmount = goldAmount + makingCharges + gstAmount;
+    double finalAmount = (goldAmount + makingCharges) +
+        (goldAmount + makingCharges + gstAmount) * gstRate;
 
     return finalAmount;
   }
