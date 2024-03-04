@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/views/delete_items.dart';
 import 'package:jewellery_app/views/product_catalog.dart';
+import 'package:jewellery_app/views/queries.dart';
 
 class AdminPortal extends StatefulWidget {
   const AdminPortal({super.key});
@@ -43,7 +44,7 @@ class _AdminPortalState extends State<AdminPortal> {
       ),
       body: Center(
         child: SizedBox(
-          width: 300,
+          width: 500,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -276,67 +277,86 @@ class _AdminPortalState extends State<AdminPortal> {
               const SizedBox(
                 height: 30,
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  const String apiKey = 'goldapi-d6zfrlpqsa4d3-io';
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      const String apiKey = 'goldapi-d6zfrlpqsa4d3-io';
 
-                  // Make a GET request to the Gold API
-                  final response = await http.get(
-                    Uri.parse('https://www.goldapi.io/api/XAU/INR'),
-                    headers: {'x-access-token': apiKey},
-                  );
-
-                  if (response.statusCode == 200) {
-                    // Parse the JSON response
-                    final Map<String, dynamic> data =
-                        json.decode(response.body);
-
-                    // Extract the gold rate from the response
-                    final double goldRate = data['price_gram_24k'];
-
-                    // Update the data in Firebase collection 'gold price'
-                    try {
-                      await FirebaseFirestore.instance
-                          .collection('Daily Gold Rate')
-                          .doc('gold_rate')
-                          .set(
-                        {'rate': goldRate},
+                      // Make a GET request to the Gold API
+                      final response = await http.get(
+                        Uri.parse('https://www.goldapi.io/api/XAU/INR'),
+                        headers: {'x-access-token': apiKey},
                       );
 
-                      // Print a message to the console
-                      if (kDebugMode) {
-                        print('Gold rate updated in Firebase: $goldRate');
+                      if (response.statusCode == 200) {
+                        // Parse the JSON response
+                        final Map<String, dynamic> data =
+                            json.decode(response.body);
+
+                        // Extract the gold rate from the response
+                        final double goldRate = data['price_gram_24k'];
+
+                        // Update the data in Firebase collection 'gold price'
+                        try {
+                          await FirebaseFirestore.instance
+                              .collection('Daily Gold Rate')
+                              .doc('gold_rate')
+                              .set(
+                            {'rate': goldRate},
+                          );
+
+                          // Print a message to the console
+                          if (kDebugMode) {
+                            print('Gold rate updated in Firebase: $goldRate');
+                          }
+                        } catch (e) {
+                          // Handle error appropriately
+                          if (kDebugMode) {
+                            print('Error updating gold rate in Firebase: $e');
+                          }
+                        }
+                      } else {
+                        // Handle HTTP error
+                        if (kDebugMode) {
+                          print(
+                              'Error fetching gold rate from API. Status Code: ${response.statusCode}');
+                        }
                       }
-                    } catch (e) {
-                      // Handle error appropriately
-                      if (kDebugMode) {
-                        print('Error updating gold rate in Firebase: $e');
-                      }
-                    }
-                  } else {
-                    // Handle HTTP error
-                    if (kDebugMode) {
-                      print(
-                          'Error fetching gold rate from API. Status Code: ${response.statusCode}');
-                    }
-                  }
-                },
-                child: const Text('Update Gold rate'),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const DeleteItems(),
-                    ),
-                    (Route<dynamic> route) => false,
-                  );
-                },
-                child: const Text('Delete items'),
+                    },
+                    child: const Text('Update Gold rate'),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const DeleteItems(),
+                        ),
+                        (Route<dynamic> route) => false,
+                      );
+                    },
+                    child: const Text('Delete items'),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Queries(),
+                        ),
+                        (Route<dynamic> route) => false,
+                      );
+                    },
+                    child: const Text('View Queries'),
+                  ),
+                ],
               ),
             ],
           ),

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,6 +20,22 @@ class _ContactUsState extends State<ContactUs> {
     TextEditingController name = TextEditingController();
     TextEditingController email = TextEditingController();
     TextEditingController query = TextEditingController();
+
+    Future<void> submitForm() async {
+      try {
+        await FirebaseFirestore.instance.collection('Contact Us').add({
+          'Name': name.text,
+          'Email': email.text,
+          'Query': query.text,
+        });
+      } catch (e) {
+        if (kDebugMode) {
+          print('Error submitting form: $e');
+        }
+        // Handle error if necessary
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -307,28 +325,51 @@ class _ContactUsState extends State<ContactUs> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                        'Thank you for contacting us'),
-                                    content: const Text(
-                                        'We have received your message and will get back to you shortly :)'),
-                                    actions: [
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          name.clear();
-                                          email.clear();
-                                          query.clear();
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
+                              if (name.text == '' ||
+                                  email.text == '' ||
+                                  query.text == '') {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title:
+                                          const Text('All fields are required'),
+                                      actions: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text(
+                                          'Thank you for contacting us'),
+                                      content: const Text(
+                                          'We have received your message and will get back to you shortly :)'),
+                                      actions: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            submitForm();
+                                            name.clear();
+                                            email.clear();
+                                            query.clear();
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
                             },
                             child: const Text('Submit'),
                           ),

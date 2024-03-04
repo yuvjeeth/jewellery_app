@@ -152,7 +152,6 @@ class _AdminLoginState extends State<AdminLogin> {
                                 Navigator.of(context).pop();
                                 uName.clear();
                                 uPassword.clear();
-                                print('Cleared from admin');
                               },
                               child: const Text(
                                 'OK',
